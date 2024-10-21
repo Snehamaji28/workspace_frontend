@@ -26,10 +26,14 @@ const LoginPage = () => {
 
       if (res.status === 200) {
         <Navigate to="/" />
+        Cookies.set('token', res.data.token); 
+        console.log("Success!");
+
       }
     } catch (error) {
       console.error('Login failed:', error);
       setError('Something went wrong! Please try again.');
+      console.log("Failed");
     } finally {
       setIsLoading(false);
     }

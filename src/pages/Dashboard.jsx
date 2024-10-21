@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showContent, setShowContent] = useState(false);
+  const [isMarkingAttendance, setIsMarkingAttendance] = useState(false);
 
   // Get first name from full name
   const getFirstName = (fullName) => {
@@ -81,6 +82,10 @@ const Dashboard = () => {
   };
 
   const handleMarkAttendance = async () => {
+    if (isMarkingAttendance) return; // Prevent multiple clicks
+    
+    setIsMarkingAttendance(true); // Disable button immediately
+    
     try {
       const response = await markAttendance();      
 
@@ -91,17 +96,17 @@ const Dashboard = () => {
       // Refresh employee data after marking attendance
       const res = await getEmployee();
       const updatedData = res.data;
-      console.log(updatedData);
-
+      
       setEmployeeData(updatedData);
       setAttendanceHistory(updatedData.attendanceRecords || []);
-      console.log(attendanceHistory);
-
       setIsMarked(true);
       showNotification();
+      
+      // No need to re-enable button on success as attendance is marked
     } catch (err) {
       console.error('Error marking attendance:', err);
       showErrorNotification('Failed to mark attendance');
+      setIsMarkingAttendance(false); // Re-enable button on error
     }
   };
 
@@ -230,14 +235,14 @@ const Dashboard = () => {
                 <div>
                   <button
                     onClick={handleMarkAttendance}
-                    disabled={!canMarkAttendance()}
+                    disabled={!canMarkAttendance() || isMarkingAttendance}
                     className={`px-4 py-2 rounded transition-colors ${
-                      canMarkAttendance() 
+                      canMarkAttendance() && !isMarkingAttendance
                         ? 'bg-blue-600 text-white hover:bg-blue-700' 
                         : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     }`}
                   >
-                    Mark Attendance
+                    {isMarkingAttendance ? 'Marking...' : 'Mark Attendance'}
                   </button>
                   {!canMarkAttendance() && (
                     <p className="text-sm text-red-500 mt-2">

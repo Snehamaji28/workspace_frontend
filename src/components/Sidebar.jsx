@@ -1,22 +1,15 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 const Sidebar = ({ isExpanded, setIsExpanded }) => {
     const navigate = useNavigate(); // useNavigate hook for navigation
 
-    const handleLogout = async () => {
-        try {
-            const response = await axios.post('/api/emp/logout'); // Make the API call to your backend
-
-            if (response.status === 200) {
-                navigate('/login'); // Use navigate function to redirect to login page
-            } else {
-                console.error('Logout failed: ', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error during logout:', error);
-        }
+    const handleLogout = () => {
+        Cookies.remove("token"); // Clear the cookie
+        navigate('/login'); // Navigate to the login page
     };
 
     const navItems = [
