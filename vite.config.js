@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // Proxying API requests starting with /api to the backend server
       '/api': {
-        target: 'http://localhost:3000', // Your backend API
+        target: 'https://workspace-backend-dnj2.onrender.com', // Your backend API
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ''),
       },
