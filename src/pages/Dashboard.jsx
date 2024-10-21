@@ -41,7 +41,7 @@ const Dashboard = () => {
           setShowContent(true);
         }, 1000);
       } catch (err) {
-        setError('Failed to fetch employee data');
+        setError('Poor Network Conntection!');
         // Set a timeout to show error after 1 seconds
         setTimeout(() => {
           setIsLoading(false);

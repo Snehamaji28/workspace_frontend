@@ -26,7 +26,7 @@ const LoginPage = () => {
 
       if (res.status === 200) {
         <Navigate to="/" />
-        Cookies.set('token', res.data.token); 
+        Cookies.set('token', res.data.token, { expires: 15 });
         console.log("Success!");
 
       }
